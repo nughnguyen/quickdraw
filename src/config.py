@@ -13,5 +13,16 @@ BLUE_RGB = (255, 0, 0)
 YELLOW_RGB = (0, 255, 255)
 WHITE_RGB = (255, 255, 255)
 
-CLASSES = ["apple", "book", "bowtie", "candle", "cloud", "cup", "door", "envelope", "eyeglasses", "guitar", "hammer",
-           "hat", "ice cream", "leaf", "scissors", "star", "t-shirt", "pants", "lightning", "tree"]
+# Expanded list of 50 classes for richer recognition experience
+CLASSES = [
+    "airplane", "apple", "basketball", "bed", "bicycle", 
+    "bird", "book", "bowtie", "cake", "candle", 
+    "car", "cat", "chair", "circle", "clock", 
+    "cloud", "computer", "cup", "dog", "door", 
+    "envelope", "eyeglasses", "fish", "flower", "guitar", 
+    "hammer", "hat", "house", "ice cream", "key", 
+    "leaf", "lightning", "moon", "mountain", "octopus", 
+    "panda", "pants", "pencil", "pizza", "rainbow", 
+    "scissors", "shoe", "smiley face", "snowflake", "square", 
+    "star", "sun", "t-shirt", "tree", "umbrella"
+]
