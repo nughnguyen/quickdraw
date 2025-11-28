@@ -12,11 +12,6 @@
 
 AI-powered drawing recognition based on Google's QuickDraw dataset. Features modern GUI with 50+ categories.
 
-<p align="center">
-  <img src="demo/quickdraw.gif" width=600><br/>
-  <i>QuickDraw in action</i>
-</p>
-
 ## Quick Start
 
 ```bash
