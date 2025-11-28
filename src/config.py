@@ -22,7 +22,7 @@ CLASSES = [
     "envelope", "eyeglasses", "fish", "flower", "guitar", 
     "hammer", "hat", "house", "ice cream", "key", 
     "leaf", "lightning", "moon", "mountain", "octopus", 
-    "panda", "pants", "pencil", "pizza", "rainbow", 
+    "pandas", "pants", "pencil", "pizza", "rainbow", 
     "scissors", "shoe", "smiley face", "snowflake", "square", 
     "star", "sun", "t-shirt", "tree", "umbrella"
 ]
