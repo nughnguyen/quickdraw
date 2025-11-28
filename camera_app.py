@@ -79,9 +79,9 @@ def main(opt):
                 gaussian = cv2.GaussianBlur(median, (5, 5), 0)
                 # Otsu's thresholding
                 _, thresh = cv2.threshold(gaussian, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-                _, contour_gs, _ = cv2.findContours(thresh.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
-                if len(contour_gs):
-                    contour = sorted(contour_gs, key=cv2.contourArea, reverse=True)[0]
+                contours, _ = cv2.findContours(thresh.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+                if len(contours):
+                    contour = sorted(contours, key=cv2.contourArea, reverse=True)[0]
                     # Check if the largest contour satisfy the condition of minimum area
                     if cv2.contourArea(contour) > opt.area:
                         x, y, w, h = cv2.boundingRect(contour)
@@ -89,9 +89,15 @@ def main(opt):
                         image = cv2.resize(image, (28, 28))
                         image = np.array(image, dtype=np.float32)[None, None, :, :]
                         image = torch.from_numpy(image)
-                        logits = model(image)
-                        predicted_class = torch.argmax(logits[0])
-                        # print (CLASSES[predicted_class])
+                        
+                        # Get prediction with confidence
+                        with torch.no_grad():
+                            logits = model(image)
+                            probabilities = torch.softmax(logits[0], dim=0)
+                            predicted_class = torch.argmax(probabilities)
+                            confidence = probabilities[predicted_class].item() * 100
+                        
+                        print(f"Predicted: {CLASSES[predicted_class]} (Confidence: {confidence:.1f}%)")
                         is_shown = True
                     else:
                         print("The object drawn is too small. Please draw a bigger one!")
@@ -130,8 +136,10 @@ def main(opt):
                     cv2.line(frame, points[i - 1], points[i], color_pointer, 2)
 
         if is_shown:
-            cv2.putText(frame, 'You are drawing', (100, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.5, color_pointer, 5, cv2.LINE_AA)
-            frame[5:65, 490:550] = get_overlay(frame[5:65, 490:550], class_images[predicted_class], (60,60))
+            cv2.putText(frame, f'{CLASSES[predicted_class]} ({confidence:.0f}%)', 
+                       (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.2, color_pointer, 3, cv2.LINE_AA)
+            if predicted_class < len(class_images) and class_images[predicted_class] is not None:
+                frame[5:65, 490:550] = get_overlay(frame[5:65, 490:550], class_images[predicted_class], (60,60))
 
 
         cv2.imshow("Camera", frame)
